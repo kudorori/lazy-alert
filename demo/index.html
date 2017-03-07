@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>lazy-alert demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../lazy-alert.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>Basic lazy-alert demo</h3>
+      <demo-snippet>
+        <template>
+          <demo-test></demo-test>
+        </template>
+      </demo-snippet>
+    </div>
+    <dom-module id="demo-test">
+      <template>
+        <button on-click="test">23123</button>
+        <lazy-alert id="alert" with-backdrop>
+          安安
+        </lazy-alert>
+      </template>
+      <script>
+        Polymer({
+          is:"demo-test",
+          test:function(){
+            this.$.alert.show().then(function(){
+              
+            })
+          }
+        })
+      </script>
+    </dom-module>
+  </body>
+</html>

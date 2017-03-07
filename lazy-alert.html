@@ -1,0 +1,109 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-overlay-behavior/iron-overlay-behavior.html" />
+<link rel="import" href="../paper-material/paper-material.html" />
+<link rel="import" href="../paper-button/paper-button.html" />
+<link rel="import" href="../paper-icon-button/paper-icon-button.html" />
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
+<link rel="import" href="../iron-icons/iron-icons.html"/>
+<link rel="import" href="../iron-icon/iron-icon.html"/>
+<!--
+`lazy-alert`
+
+
+@demo demo/index.html 
+-->
+
+<dom-module id="lazy-alert">
+  <style is="custom-style" include="iron-flex">
+    paper-material{
+      background:#fff;
+      min-width:300px;
+      min-height:230px;
+      @apply(--layout-vertical)
+    }
+    .header{
+      border-bottom: 1px solid #ddd;
+      padding: 0px 12px;
+      font-size: 16px;
+      @apply(--layout-horizontal);
+      @apply(--layout-center);
+      @apply(--lazy-alert-header);
+    }
+    .header paper-icon-button{
+      @apply(--lazy-alert-header-button);
+    }
+    .actions{
+      border-top: 1px solid #ddd;
+      text-align:center;
+      padding: 0px 12px;
+      @apply(--lazy-alert-actions);
+    }
+    .actions paper-button{
+      @apply(--lazy-alert-actions-button);
+    }
+    .main{
+      padding:12px;
+      @apply(--lazy-alert-main);
+    }
+  </style>
+  <template>
+    <paper-material>
+      <template is="dom-if" if="[[!hiddenHeader]]">
+        <div class="header">
+          <div class="flex">[[header]]</div>
+          <paper-icon-button icon="close" on-click="__click"></paper-icon-button>
+        </div>
+      </template>
+      <div class="flex main">
+        <content></content>
+      </div>
+      <div class="actions">
+        <paper-button on-click="__click">[[btnText]]</paper-button>
+      </div>
+    </paper-material>
+    
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'lazy-alert',
+  	  behaviors:[
+  		  Polymer.IronOverlayBehavior
+  	  ],
+      properties: {
+        btnText:{
+          type: String,
+          value: "確認"
+        },
+        modal:{
+          type: Boolean,
+          value: true
+        },
+        hiddenHeader:{
+          type: Boolean,
+          value: false
+        },
+        header:{
+          type: String,
+          value: "提示"
+        }
+      },
+      show: function(){
+        this.open();
+        return new Promise(function(resolve){
+          var listener = function(){
+            console.log(123);
+            this.removeEventListener("iron-overlay-closed",listener);
+            resolve();
+          };
+          this.addEventListener("iron-overlay-closed",listener);
+        }.bind(this));
+      },
+      __click:function(){
+        this.close();
+      }
+
+    });
+  </script>
+</dom-module>
